@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 36 33% 90%;
+    --foreground: 24 9% 14%;
+    --card: 36 33% 95%;
+    --card-foreground: 24 9% 14%;
+    --primary: 24 9% 14%;
+    --primary-foreground: 36 33% 90%;
+    --secondary: 43 100% 94%;
+    --secondary-foreground: 24 9% 14%;
+    --accent: 266 67% 73%;
+    --accent-foreground: 0 0% 100%;
+    --lime: 78 92% 65%;
+    --lime-foreground: 24 9% 14%;
+    --orange: 28 100% 57%;
+    --orange-foreground: 0 0% 100%;
+    --muted: 36 20% 85%;
+    --muted-foreground: 24 9% 40%;
+    --border: 24 9% 20%;
+    --input: 24 9% 80%;
+    --ring: 24 9% 14%;
+    --radius: 1.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary via-primary to-accent bg-clip-text text-transparent;
+  }
+
+  .text-gradient-anim {
+    background: linear-gradient(
+      90deg,
+      #242424,
+      #242424,
+      #9b87c7,
+      #242424,
+      #242424
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradient 4s ease-in-out infinite;
+  }
+
+  @keyframes gradient {
+    0%,
+    100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+}
