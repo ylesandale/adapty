@@ -17,7 +17,7 @@ import { CaseStudiesSection } from './components/CaseStudiesSection'
  */
 const App: React.FC = () => {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen overflow-x-hidden">
       <HeroSection />
       <TrustSection />
       <FeaturesSection />

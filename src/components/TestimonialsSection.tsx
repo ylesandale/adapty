@@ -81,6 +81,8 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
   className,
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [touchStart, setTouchStart] = useState(0)
+  const [touchEnd, setTouchEnd] = useState(0)
 
   const slideVariants = {
     enter: {
@@ -101,6 +103,32 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
       (prevIndex) =>
         (prevIndex + newDirection + testimonials.length) % testimonials.length
     )
+  }
+
+  // Touch handlers for swipe
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX)
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX)
+  }
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return
+
+    const distance = touchStart - touchEnd
+    const isLeftSwipe = distance > 50
+    const isRightSwipe = distance < -50
+
+    if (isLeftSwipe) {
+      paginate(1)
+    } else if (isRightSwipe) {
+      paginate(-1)
+    }
+
+    setTouchStart(0)
+    setTouchEnd(0)
   }
 
   // Auto-advance every 7.5 seconds
@@ -127,7 +155,12 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
       {/* Carousel Container */}
       <div className="relative">
         {/* Testimonial Slides */}
-        <div className="relative min-h-[700px] sm:min-h-[650px] md:min-h-[600px] lg:min-h-[500px] xl:min-h-[450px] flex items-center py-6 md:py-8">
+        <div
+          className="relative min-h-[700px] sm:min-h-[650px] md:min-h-[600px] lg:min-h-[500px] xl:min-h-[450px] flex items-center py-6 md:py-8"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
           <AnimatePresence initial={false} mode="wait">
             <motion.div
               key={currentIndex}
@@ -185,8 +218,8 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
           </AnimatePresence>
         </div>
 
-        {/* Navigation */}
-        <div className="flex items-center justify-center gap-3 sm:gap-4 mt-12 sm:mt-14 md:mt-16 lg:mt-20">
+        {/* Navigation - Desktop only (with buttons) */}
+        <div className="hidden md:flex items-center justify-center gap-3 sm:gap-4 mt-12 sm:mt-14 md:mt-16 lg:mt-20">
           {/* Previous Button */}
           <button
             onClick={() => paginate(-1)}
@@ -221,6 +254,23 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
           >
             <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
+        </div>
+
+        {/* Navigation - Mobile only (dots only) */}
+        <div className="flex md:hidden justify-center gap-2 mt-12">
+          {testimonials.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentIndex(index)}
+              aria-label={`Go to testimonial ${index + 1}`}
+              className={cn(
+                'h-2 rounded-full transition-all duration-300',
+                index === currentIndex
+                  ? 'bg-accent w-8'
+                  : 'bg-border w-2 hover:bg-accent/50'
+              )}
+            />
+          ))}
         </div>
       </div>
 
