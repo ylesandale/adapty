@@ -6,8 +6,8 @@ export default defineConfig({
   name: 'default',
   title: 'Adapty Blog',
 
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'your-project-id',
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
+  projectId: 'c3kk9rei',
+  dataset: 'production',
 
   basePath: '/studio',
 
