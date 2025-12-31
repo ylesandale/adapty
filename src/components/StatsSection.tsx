@@ -1,6 +1,8 @@
+'use client'
+
 import React from 'react'
-import { Section, SectionTitle, StatsGrid } from '@/components/common'
-import { DecorativeBlur } from '@/constants'
+import { cn } from '@/lib/utils'
+import { Container, AnimatedElement } from './common'
 
 interface StatsSectionProps {
   /** Optional CSS classes */
@@ -27,20 +29,36 @@ const stats = [
 ]
 
 /**
- * Stats section component displaying key metrics
+ * Stats section - Vercel style
  * @component
  */
 export const StatsSection: React.FC<StatsSectionProps> = ({ className }) => {
   return (
-    <Section className={className}>
-      <SectionTitle size="medium" className="max-w-5xl mx-auto">
-        Adapty обрабатывает доход от подписок с самым высоким SLA уровнем в
-        индустрии
-      </SectionTitle>
+    <section className={cn('py-20 md:py-28 bg-secondary', className)}>
+      <Container>
+        <AnimatedElement className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-16 max-w-4xl mx-auto">
+          Adapty обрабатывает доход от подписок с{' '}
+          <span className="text-gradient">самым высоким SLA</span> уровнем в
+          индустрии
+        </AnimatedElement>
 
-      <StatsGrid stats={stats} />
-
-      <DecorativeBlur />
-    </Section>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
+          {stats.map((stat, index) => (
+            <AnimatedElement
+              key={stat.label}
+              className="flex flex-col items-center text-center p-6 rounded-2xl bg-white border border-border"
+              delay={index * 0.1}
+            >
+              <div className="text-3xl md:text-4xl font-bold text-black mb-3 whitespace-nowrap">
+                {stat.value}
+              </div>
+              <div className="text-sm md:text-base text-muted-foreground">
+                {stat.label}
+              </div>
+            </AnimatedElement>
+          ))}
+        </div>
+      </Container>
+    </section>
   )
 }

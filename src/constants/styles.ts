@@ -4,6 +4,7 @@
 
 export const sectionPadding = 'py-16 md:py-20 lg:py-24'
 export const containerWidth = 'container mx-auto px-4 max-w-5xl'
+export const containerWidthLarge = 'container mx-auto px-4 max-w-7xl'
 
 export const cardBase =
   'bg-white border-2 border-border/10 rounded-[2rem] overflow-hidden'

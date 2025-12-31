@@ -1,10 +1,12 @@
-import React from 'react'
-import { Section, SectionTitle, LogoGrid } from '@/components/common'
-import { DecorativeBlurAlt } from '@/constants'
+'use client';
+
+import React from 'react';
+import { cn } from '@/lib/utils';
+import { Container, AnimatedElement } from './common';
 
 interface TrustSectionProps {
   /** Optional CSS classes */
-  className?: string
+  className?: string;
 }
 
 const trustedApps = [
@@ -44,26 +46,39 @@ const trustedApps = [
     logoUrl: 'https://adapty.io/assets/uploads/2024/01/logo-hubx-gray.svg',
     alt: 'HUBX',
   },
-]
+];
 
 /**
- * Trust section component displaying trusted companies/apps
+ * Trust section component - Vercel style
  * @component
  */
 export const TrustSection: React.FC<TrustSectionProps> = ({ className }) => {
   return (
-    <Section className={className}>
-      <SectionTitle
-        size="small"
-        className="text-muted-foreground font-medium max-w-4xl mx-auto"
-      >
-        Доверяют более 15,000+ приложений и крупнейших мировых издателей
-        приложений
-      </SectionTitle>
+    <section className={cn('py-12 md:py-16 bg-white border-t border-border', className)}>
+      <Container>
+        <AnimatedElement className="text-center text-sm md:text-base text-muted-foreground mb-10">
+          Доверяют более <strong className="font-semibold text-foreground">15,000+ приложений</strong> и
+          крупнейших мировых издателей
+        </AnimatedElement>
 
-      <LogoGrid logos={trustedApps} />
-
-      <DecorativeBlurAlt />
-    </Section>
-  )
-}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-8 md:gap-10 items-center justify-items-center">
+          {trustedApps.map((logo, index) => (
+            <AnimatedElement
+              key={logo.name}
+              className="flex items-center justify-center w-full h-12 opacity-50 hover:opacity-100 transition-opacity duration-200"
+              delay={index * 0.05}
+            >
+              <img
+                src={logo.logoUrl}
+                alt={logo.alt}
+                className="max-w-full max-h-full object-contain grayscale"
+                loading="lazy"
+                draggable="false"
+              />
+            </AnimatedElement>
+          ))}
+        </div>
+      </Container>
+    </section>
+  );
+};

@@ -1,0 +1,95 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Vercel White Theme */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 0%;
+    
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 0%;
+    
+    --primary: 0 0% 0%;
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 0%;
+    
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
+    
+    --accent: 0 0% 96%;
+    --accent-foreground: 0 0% 0%;
+    
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 0 0% 0%;
+    
+    --radius: 12px;
+    
+    /* Vercel gradient colors */
+    --gradient-pink: 330 100% 71%;
+    --gradient-orange: 25 100% 61%;
+    --gradient-blue: 210 100% 60%;
+    --gradient-cyan: 180 100% 70%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased overflow-x-hidden;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+}
+
+@layer utilities {
+  /* Vercel-style gradient text */
+  .text-gradient {
+    background: linear-gradient(
+      to right,
+      hsl(var(--gradient-pink)),
+      hsl(var(--gradient-orange)),
+      hsl(var(--gradient-blue))
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Vercel hero gradient background */
+  .gradient-bg {
+    background: radial-gradient(
+      circle at 50% 50%,
+      hsla(var(--gradient-pink), 0.15),
+      hsla(var(--gradient-orange), 0.1) 25%,
+      hsla(var(--gradient-blue), 0.1) 50%,
+      hsla(var(--gradient-cyan), 0.08) 75%,
+      transparent 100%
+    );
+  }
+
+  /* Vercel card with subtle shadow */
+  .vercel-card {
+    @apply bg-white rounded-2xl border border-border shadow-sm hover:shadow-md transition-all duration-300;
+  }
+
+  /* Vercel button gradient */
+  .btn-gradient {
+    background: linear-gradient(
+      to right,
+      hsl(var(--gradient-pink)),
+      hsl(var(--gradient-orange))
+    );
+  }
+}
+

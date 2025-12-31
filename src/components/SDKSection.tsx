@@ -1,19 +1,22 @@
-import React from 'react'
-import { motion } from 'framer-motion'
-import { ArrowRight } from 'lucide-react'
-import { Section, SectionTitle } from '@/components/common'
-import { fadeInUp, DecorativeBlurAlt } from '@/constants'
+'use client';
+
+import React from 'react';
+import { motion } from 'framer-motion';
+import { ArrowRight } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Container, AnimatedElement } from './common';
 
 interface SDKSectionProps {
   /** Optional CSS classes */
-  className?: string
+  className?: string;
 }
 
 interface SDKCard {
-  id: string
-  name: string
-  icon: string
-  url: string
+  id: string;
+  name: string;
+  nameDesktop?: string; // Для KMP - разные названия на desktop/mobile
+  icon: string;
+  url: string;
 }
 
 const sdkCards: SDKCard[] = [
@@ -55,7 +58,8 @@ const sdkCards: SDKCard[] = [
   },
   {
     id: 'kmp',
-    name: 'Kotlin Multiplatform',
+    name: 'KMP SDK',
+    nameDesktop: 'Kotlin Multiplatform',
     icon: 'https://adapty.io/assets/uploads/2025/10/kmp-logo.svg',
     url: 'https://adapty.io/ru/sdk/kmp/',
   },
@@ -66,7 +70,7 @@ const sdkCards: SDKCard[] = [
     url: 'https://adapty.io/ru/sdk/flutterflow/',
   },
   {
-    id: 'web-api',
+    id: 'web',
     name: 'Web API',
     icon: 'https://adapty.io/assets/uploads/2024/01/icon-web-64x64-1.svg',
     url: 'https://adapty.io/ru/sdk/web/',
@@ -77,58 +81,66 @@ const sdkCards: SDKCard[] = [
     icon: 'https://adapty.io/assets/uploads/2024/02/icon-stripe-64x64-1.svg',
     url: 'https://adapty.io/ru/integrations/stripe/',
   },
-]
+];
 
 /**
- * SDK platforms section with cards for different platforms
+ * SDK section - Vercel style
  * @component
  */
 export const SDKSection: React.FC<SDKSectionProps> = ({ className }) => {
   return (
-    <Section
-      variant="dark"
-      className={className}
-      containerClassName="py-12 md:py-16 lg:py-20"
-    >
-      <SectionTitle size="medium" className="mb-10 md:mb-12 lg:mb-16">
-        Установите SDK для своей платформы
-      </SectionTitle>
+    <section className={cn('py-20 md:py-28 bg-secondary', className)}>
+      <Container>
+        <AnimatedElement className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+            Установите <span className="text-gradient">SDK</span> для своей платформы
+          </h2>
+        </AnimatedElement>
 
-      {/* SDK Cards Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
-        {sdkCards.map((sdk) => (
-          <motion.a
-            key={sdk.id}
-            href={sdk.url}
-            className="group flex flex-col items-center justify-between bg-[#2a2a2a] rounded-2xl p-6 md:p-8 border border-white/10 transition-all duration-300 hover:bg-[#333] hover:border-accent hover:shadow-lg hover:shadow-accent/20 hover:-translate-y-1"
-            aria-label={sdk.name}
-            initial={fadeInUp.initial}
-            whileInView={fadeInUp.whileInView}
-            viewport={fadeInUp.viewport}
-            transition={fadeInUp.transition}
-          >
-            {/* Icon */}
-            <div className="flex items-center justify-center mb-6 h-16 w-16">
-              <img
-                src={sdk.icon}
-                alt={sdk.name}
-                className="w-full h-full object-contain"
-                loading="lazy"
-              />
-            </div>
-
-            {/* Label and Arrow */}
-            <div className="flex items-center justify-between w-full gap-2">
-              <h3 className="text-sm md:text-base font-semibold text-white text-left flex-1">
-                {sdk.name}
-              </h3>
-              <ArrowRight className="h-4 w-4 text-accent flex-shrink-0 transition-transform duration-300 group-hover:translate-x-1" />
-            </div>
-          </motion.a>
-        ))}
-      </div>
-
-      <DecorativeBlurAlt />
-    </Section>
-  )
-}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          {sdkCards.map((sdk, index) => (
+            <motion.a
+              key={sdk.id}
+              href={sdk.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={sdk.name}
+              className="group flex flex-col items-center justify-center gap-4 p-6 vercel-card hover:border-black transition-all"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.05 }}
+            >
+              <figure className="w-16 h-16">
+                <img
+                  src={sdk.icon}
+                  alt={`${sdk.name} Icon`}
+                  aria-hidden="true"
+                  className="w-full h-full object-contain opacity-70 group-hover:opacity-100 transition-opacity"
+                  loading="eager"
+                />
+              </figure>
+              <div className="flex items-center gap-2">
+                {sdk.nameDesktop ? (
+                  <>
+                    <span className="hidden md:block text-sm font-medium text-foreground text-center">
+                      {sdk.nameDesktop}
+                    </span>
+                    <span className="md:hidden text-sm font-medium text-foreground text-center">
+                      {sdk.name}
+                    </span>
+                  </>
+                ) : (
+                  <span className="text-sm font-medium text-foreground text-center">
+                    {sdk.name}
+                  </span>
+                )}
+                <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
+              </div>
+            </motion.a>
+          ))}
+        </div>
+      </Container>
+    </section>
+  );
+};

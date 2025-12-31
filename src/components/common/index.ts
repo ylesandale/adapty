@@ -8,4 +8,6 @@ export * from './Card'
 export * from './LogoGrid'
 export * from './StatsGrid'
 export * from './FeatureCard'
+export * from './AnimatedElement'
+export * from './Container'
 

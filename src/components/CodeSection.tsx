@@ -1,22 +1,25 @@
-import React, { useState } from 'react'
-import { motion } from 'framer-motion'
-import { ArrowRight, Copy, Check } from 'lucide-react'
-import { Button } from './ui/button'
-import { cn } from '@/lib/utils'
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { materialDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
+'use client';
+
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { ArrowRight, Copy, Check } from 'lucide-react';
+import { Button } from './ui/button';
+import { cn } from '@/lib/utils';
+import { Container, AnimatedElement } from './common';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 interface CodeSectionProps {
   /** Optional CSS classes */
-  className?: string
+  className?: string;
 }
 
 interface CodeTab {
-  id: string
-  label: string
-  language: string
-  code: string
-  githubUrl: string
+  id: string;
+  label: string;
+  language: string;
+  code: string;
+  githubUrl: string;
 }
 
 const codeTabs: CodeTab[] = [
@@ -110,114 +113,89 @@ Adapty.makePurchase(product, (profile, error) => {
 });`,
     githubUrl: 'https://github.com/adaptyteam/AdaptySDK-Unity',
   },
-]
+];
 
 /**
- * Code integration section with dark background and code examples
+ * Code integration section - Vercel style
  * @component
  */
 export const CodeSection: React.FC<CodeSectionProps> = ({ className }) => {
-  const [activeTab, setActiveTab] = useState(codeTabs[0].id)
-  const [copied, setCopied] = useState(false)
+  const [activeTab, setActiveTab] = useState(codeTabs[0].id);
+  const [copied, setCopied] = useState(false);
 
   const activeTabData =
-    codeTabs.find((tab) => tab.id === activeTab) || codeTabs[0]
+    codeTabs.find((tab) => tab.id === activeTab) || codeTabs[0];
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(activeTabData.code)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
+    navigator.clipboard.writeText(activeTabData.code);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
-    <section
-      className={cn(
-        'relative bg-[#1a1a1a] text-white py-16 md:py-20 lg:py-24',
-        className
-      )}
-    >
-      <div className="container mx-auto px-4 max-w-5xl">
-        {/* Title - Full Width */}
-        <motion.h2
-          className="text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-12 md:mb-16 lg:mb-20 leading-tight"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.6 }}
-        >
-          Интегрируйте покупки в приложении с помощью нескольких строк кода
-        </motion.h2>
+    <section className={cn('py-20 md:py-28 bg-white', className)}>
+      <Container>
+        {/* Title */}
+        <AnimatedElement className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-16 max-w-4xl mx-auto">
+          Интегрируйте покупки в приложении{' '}
+          <span className="text-gradient">с помощью нескольких строк кода</span>
+        </AnimatedElement>
 
-        {/* Two Column Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-          {/* Left Column - Description & Quote */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+          {/* Left Column - Description */}
           <motion.div
-            className="flex flex-col gap-8"
-            initial={{ opacity: 0, x: -30 }}
+            className="flex flex-col gap-6"
+            initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: '-50px' }}
-            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
           >
-            {/* Description */}
-            <div className="text-base md:text-lg text-gray-300 leading-relaxed">
+            <p className="text-lg text-muted-foreground leading-relaxed">
               Интегрируйте IAP за несколько часов без серверного кодирования с
               помощью простого и удобного SDK. А дальше, Adapty будет управлять
-              работой и состоянем каждой вашей подписки – от активации, до
+              работой и состоянием каждой вашей подписки – от активации, до
               возврата.
-            </div>
+            </p>
 
-            {/* Button */}
-            <div>
-              <Button
-                variant="outline"
-                size="default"
-                className="border-white/50 bg-transparent text-white hover:bg-white hover:text-[#1a1a1a] hover:border-white"
-                onClick={() =>
-                  (window.location.href = 'https://adapty.io/ru/sdk/')
-                }
-              >
-                Быстрая интеграция
-                <ArrowRight className="h-4 w-4" />
-              </Button>
-            </div>
-
-            {/* Divider */}
-            <div className="h-px bg-white/20 my-4" />
+            <Button
+              variant="outline"
+              onClick={() =>
+                (window.location.href = 'https://adapty.io/ru/sdk/')
+              }
+            >
+              Быстрая интеграция
+              <ArrowRight className="h-4 w-4" />
+            </Button>
 
             {/* Quote Card */}
-            <div className="bg-white/5 rounded-3xl p-6 md:p-8 border border-white/10">
-              <div className="text-4xl mb-4">"</div>
-
-              {/* Logo */}
-              <div className="mb-6">
+            <div className="vercel-card p-6 mt-4">
+              <div className="flex items-center gap-3 mb-4">
                 <img
                   src="https://adapty.io/assets/uploads/2024/02/Smitten_Color-Logo-Small-02.webp"
                   alt="Smitten"
-                  className="h-8 md:h-10"
+                  className="h-8"
                   loading="lazy"
                 />
               </div>
 
-              {/* Quote Text */}
-              <p className="text-base md:text-lg text-gray-200 mb-6 leading-relaxed">
-                С SDK Adapty, добавить покупки в приложение оказалось проще
+              <p className="text-base text-foreground mb-4 leading-relaxed">
+                &quot;С SDK Adapty, добавить покупки в приложение оказалось проще
                 простого. С помощью всего нескольких строк кода я смог без
-                проблем добавить подписки как для iOS, так и для Android.
+                проблем добавить подписки как для iOS, так и для Android.&quot;
               </p>
 
-              {/* Author */}
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3">
                 <img
                   src="https://adapty.io/assets/uploads/2024/02/Magnus-Olafsson-Smitten@2x.webp"
-                  alt="Magnus Olafsson Smitten"
-                  className="w-12 h-12 rounded-full"
+                  alt="Magnus Olafsson"
+                  className="w-10 h-10 rounded-full"
                   loading="lazy"
                 />
                 <div>
-                  <div className="font-semibold text-white">
+                  <div className="font-medium text-sm text-foreground">
                     Магнус Олафссон
                   </div>
-                  <div className="text-sm text-gray-400">
+                  <div className="text-xs text-muted-foreground">
                     Главный технический директор в Smitten
                   </div>
                 </div>
@@ -225,25 +203,25 @@ export const CodeSection: React.FC<CodeSectionProps> = ({ className }) => {
             </div>
           </motion.div>
 
-          {/* Right Column - Code Tabs */}
+          {/* Right Column - Code Editor */}
           <motion.div
-            className="flex flex-col bg-[#212121] rounded-3xl overflow-hidden border border-white/10"
-            initial={{ opacity: 0, x: 30 }}
+            className="flex flex-col vercel-card overflow-hidden"
+            initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: '-50px' }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
           >
-            {/* Tabs Header */}
-            <div className="flex overflow-x-auto bg-[#1a1a1a] border-b border-white/10">
+            {/* Tabs */}
+            <div className="flex overflow-x-auto bg-secondary border-b border-border">
               {codeTabs.map((tab) => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={cn(
-                    'px-3 md:px-4 py-3 text-xs md:text-sm font-medium whitespace-nowrap transition-colors',
+                    'px-4 py-3 text-sm font-medium whitespace-nowrap transition-colors border-b-2',
                     activeTab === tab.id
-                      ? 'text-white bg-[#212121] border-b-2 border-accent'
-                      : 'text-gray-400 hover:text-white'
+                      ? 'text-foreground border-black bg-white'
+                      : 'text-muted-foreground border-transparent hover:text-foreground'
                   )}
                 >
                   {tab.label}
@@ -252,73 +230,60 @@ export const CodeSection: React.FC<CodeSectionProps> = ({ className }) => {
             </div>
 
             {/* Code Content */}
-            <div className="relative flex-1 p-6 md:p-8">
+            <div className="relative p-4 bg-white">
               {/* Copy Button */}
               <button
                 onClick={handleCopy}
-                className="absolute top-4 right-4 p-2 rounded-lg bg-white/10 hover:bg-white/20 transition-colors"
+                className="absolute top-6 right-6 p-2 rounded-lg border border-border bg-white hover:bg-secondary transition-colors z-10"
                 title={copied ? 'Copied!' : 'Copy code'}
               >
                 {copied ? (
-                  <Check className="w-5 h-5 text-green-400" />
+                  <Check className="w-4 h-4 text-green-600" />
                 ) : (
-                  <Copy className="w-5 h-5 text-white" />
+                  <Copy className="w-4 h-4 text-muted-foreground" />
                 )}
               </button>
 
-              {/* Code Block with Syntax Highlighting */}
+              {/* Code Block */}
               <SyntaxHighlighter
                 language={activeTabData.language}
-                style={materialDark}
+                style={oneLight}
                 customStyle={{
                   margin: 0,
-                  padding: 0,
+                  padding: '1rem',
                   background: 'transparent',
-                  fontSize: 'clamp(14px, 0.875rem, 16px)',
+                  fontSize: '14px',
                 }}
-                showLineNumbers={true}
-                lineNumberStyle={{
-                  minWidth: '3em',
-                  paddingRight: '1em',
-                  color: '#666',
-                  userSelect: 'none',
-                }}
-                wrapLines={true}
+                showLineNumbers={false}
               >
                 {activeTabData.code}
               </SyntaxHighlighter>
             </div>
 
             {/* Footer */}
-            <div className="flex items-center justify-between p-4 md:p-6 bg-[#1a1a1a] border-t border-white/10">
-              <div className="flex items-center gap-3">
+            <div className="flex items-center justify-between p-4 bg-secondary border-t border-border">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <svg
-                  className="w-6 h-6 text-white"
+                  className="w-5 h-5"
                   fill="currentColor"
                   viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+                  <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0.0024 12c0-6.63-5.37-12-12-12z" />
                 </svg>
-                <span className="text-sm text-gray-400">100% Open Source</span>
+                100% Open Source
               </div>
               <Button
-                variant="outline"
+                variant="ghost"
                 size="sm"
-                className="border-white/20 bg-transparent text-white hover:bg-white hover:text-[#1a1a1a] hover:border-white"
                 onClick={() => window.open(activeTabData.githubUrl, '_blank')}
               >
-                Go to GitHub
+                GitHub
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </div>
           </motion.div>
         </div>
-      </div>
-
-      {/* Decorative Elements */}
-      <div className="absolute top-10 left-4 md:top-20 md:left-20 w-32 h-32 md:w-40 md:h-40 bg-accent/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-10 right-4 md:bottom-20 md:right-20 w-24 h-24 md:w-32 md:h-32 bg-white/5 rounded-full blur-2xl" />
+      </Container>
     </section>
-  )
-}
+  );
+};

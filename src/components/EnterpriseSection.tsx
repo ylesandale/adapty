@@ -1,137 +1,114 @@
-import React from 'react'
-import { motion } from 'framer-motion'
-import { ArrowRight } from 'lucide-react'
-import { Section, SectionTitle } from '@/components/common'
-import { fadeInUp, DecorativeBlur } from '@/constants'
-import { cn } from '@/lib/utils'
+'use client';
+
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Button } from './ui/button';
+import { ArrowRight, Shield, Zap, Users } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Container, AnimatedElement } from './common';
 
 interface EnterpriseSectionProps {
   /** Optional CSS classes */
-  className?: string
+  className?: string;
 }
 
-interface EnterpriseColumn {
-  title: string
-  items: EnterpriseItem[]
-}
-
-interface EnterpriseItem {
-  text: string
-  link?: string
-  hasArrow?: boolean
-}
-
-const columns: EnterpriseColumn[] = [
+const features = [
   {
-    title: 'Безопасность',
-    items: [
-      { text: 'Сертификация SOC2' },
-      { text: 'Шифрование данных' },
-      { text: 'Круглосуточный мониторинг мошенничества' },
-    ],
+    icon: Shield,
+    title: 'Enterprise Security',
+    description: 'SOC 2, GDPR, и полное соответствие стандартам безопасности',
   },
   {
-    title: 'Надежность',
-    items: [
-      {
-        text: '99.99% SLA',
-        link: 'https://status.adapty.io/?_ga=2.123025353.339646607.1672001945-1139331965.1672001945',
-        hasArrow: true,
-      },
-      {
-        text: '$500 млн. в год обработанных платежей в приложениях',
-      },
-    ],
+    icon: Zap,
+    title: 'Высокая производительность',
+    description: '99.99% uptime с глобальной CDN инфраструктурой',
   },
   {
-    title: 'Отзывчивость',
-    items: [
-      { text: 'Выделенный менеджер по работе с клиентами' },
-      { text: 'Прямая связь через Slack' },
-      { text: 'Онлайн-чат на сайте' },
-      { text: 'Четыре способа связаться с нами' },
-    ],
+    icon: Users,
+    title: 'Dedicated Support',
+    description: 'Персональный менеджер и приоритетная поддержка 24/7',
   },
-]
+];
 
 /**
- * Enterprise features section component
+ * Enterprise section - Vercel style
  * @component
  */
 export const EnterpriseSection: React.FC<EnterpriseSectionProps> = ({
   className,
 }) => {
   return (
-    <Section className={className}>
-      <SectionTitle>Платформа уровня Enterprise</SectionTitle>
+    <section className={cn('py-20 md:py-28 bg-white', className)}>
+      <Container>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          {/* Left - Content */}
+          <AnimatedElement className="flex flex-col gap-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border bg-secondary w-fit">
+              <span className="text-xs font-medium">Enterprise</span>
+            </div>
 
-      {/* Columns Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-4 lg:gap-8">
-        {columns.map((column, index) => (
+            <h2 className="text-4xl md:text-5xl font-bold">
+              Масштабируйте без <span className="text-gradient">компромиссов</span>
+            </h2>
+
+            <p className="text-lg text-muted-foreground">
+              Решение корпоративного уровня для компаний, которые серьезно
+              относятся к росту и безопасности.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Button
+                onClick={() =>
+                  (window.location.href = 'https://adapty.io/ru/schedule-demo/')
+                }
+              >
+                Связаться с отделом продаж
+                <ArrowRight className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() =>
+                  (window.location.href = 'https://adapty.io/ru/enterprise/')
+                }
+              >
+                Узнать больше
+              </Button>
+            </div>
+          </AnimatedElement>
+
+          {/* Right - Features */}
           <motion.div
-            key={column.title}
-            className={cn(
-              'relative px-0 md:px-4 lg:px-8',
-              index < columns.length - 1 && 'md:border-r-2 md:border-accent/30'
-            )}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-50px' }}
-            transition={fadeInUp.transition}
+            className="flex flex-col gap-4"
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
           >
-            {/* Column Title */}
-            <h3 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8 text-foreground">
-              {column.title}
-            </h3>
-
-            {/* Items List */}
-            <ul className="flex flex-col gap-4">
-              {column.items.map((item, itemIndex) => (
-                <li key={itemIndex} className="relative">
-                  {item.link ? (
-                    <a
-                      href={item.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group flex items-start gap-2 text-foreground hover:text-primary transition-colors duration-300"
-                    >
-                      {item.hasArrow && (
-                        <ArrowRight className="w-4 h-4 mt-1 flex-shrink-0 transition-transform duration-300 group-hover:translate-x-1" />
-                      )}
-                      <span className="text-base md:text-lg leading-relaxed underline decoration-primary/30 hover:decoration-primary transition-colors">
-                        {item.text}
-                      </span>
-                    </a>
-                  ) : (
-                    <div className="flex items-start gap-2 text-foreground">
-                      <span className="text-base md:text-lg leading-relaxed">
-                        {item.text}
-                      </span>
-                    </div>
-                  )}
-                  {/* Separator line */}
-                  {itemIndex < column.items.length - 1 && (
-                    <div className="h-px bg-border mt-4" />
-                  )}
-                </li>
-              ))}
-            </ul>
-
-            {/* Mobile Divider */}
-            {index < columns.length - 1 && (
+            {features.map((feature, index) => (
               <motion.div
-                className="md:hidden h-px bg-accent/30 mt-8"
-                initial={{ scaleX: 0 }}
-                whileInView={{ scaleX: 1 }}
+                key={feature.title}
+                className="vercel-card p-6 hover:border-black"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.3 }}
-              />
-            )}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <div className="flex items-start gap-4">
+                  <div className="p-2 rounded-lg bg-secondary">
+                    <feature.icon className="w-5 h-5 text-foreground" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-semibold mb-1">{feature.title}</h3>
+                    <p className="text-sm text-muted-foreground">
+                      {feature.description}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </motion.div>
-        ))}
-      </div>
-
-      <DecorativeBlur />
-    </Section>
-  )
-}
+        </div>
+      </Container>
+    </section>
+  );
+};

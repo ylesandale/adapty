@@ -1,20 +1,20 @@
-import React from 'react'
-import { ArrowRight } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import React from 'react';
+import { ArrowRight } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface PromotionalBannerProps {
   /** Banner label text */
-  label: string
+  label: string;
   /** Banner title text */
-  title: string
+  title: string;
   /** Banner link URL */
-  href: string
+  href: string;
   /** Optional CSS classes */
-  className?: string
+  className?: string;
 }
 
 /**
- * Promotional banner component with label, title, and link
+ * Promotional banner - Vercel style
  * @component
  */
 export const PromotionalBanner: React.FC<PromotionalBannerProps> = ({
@@ -29,15 +29,15 @@ export const PromotionalBanner: React.FC<PromotionalBannerProps> = ({
       target="_blank"
       rel="noopener noreferrer"
       className={cn(
-        'inline-flex items-center gap-3 rounded-full border-2 border-[#242424] bg-[#C8F560] px-4 py-2.5 transition-all duration-300 hover:scale-105 hover:shadow-xl active:scale-95 group',
+        'inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border bg-white hover:bg-secondary transition-all duration-200 group',
         className
       )}
     >
-      <span className="rounded-full bg-[#242424] px-3 py-1 text-xs font-semibold text-white">
+      <span className="text-xs font-medium bg-black text-white px-2 py-0.5 rounded-full">
         {label}
       </span>
-      <span className="text-sm font-medium text-[#242424]">{title}</span>
-      <ArrowRight className="h-4 w-4 text-[#242424] transition-transform group-hover:translate-x-1" />
+      <span className="text-sm text-foreground">{title}</span>
+      <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:translate-x-0.5 transition-transform" />
     </a>
-  )
-}
+  );
+};

@@ -1,150 +1,163 @@
-import React from 'react'
-import { motion } from 'framer-motion'
-import { PromotionalBanner } from './PromotionalBanner'
-import { Button } from './ui/button'
-import { Input } from './ui/input'
-import { ArrowRight } from 'lucide-react'
-import { cn } from '@/lib/utils'
+'use client';
+
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
+import { ArrowRight } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface HeroSectionProps {
   /** Optional CSS classes */
-  className?: string
+  className?: string;
 }
 
 /**
- * Hero section component for the main landing page
- * Displays promotional banner, heading, description, signup form, and demo button
+ * Hero section component - Vercel style redesign
  * @component
  */
 export const HeroSection: React.FC<HeroSectionProps> = ({ className }) => {
-  const [email, setEmail] = React.useState('')
+  const [email, setEmail] = React.useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     if (email) {
       window.location.href = `https://app.adapty.io/registration-by-email/?email=${encodeURIComponent(
         email
-      )}`
+      )}`;
     }
-  }
+  };
 
   return (
     <section
       className={cn(
-        'relative overflow-hidden bg-background min-h-screen flex items-center',
+        'relative overflow-hidden bg-white pt-32 pb-20 md:pt-40 md:pb-28',
         className
       )}
     >
-      <div className="container mx-auto px-4 py-12 md:py-16 lg:py-20 max-w-5xl">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 xl:gap-20 items-center">
-          {/* Left Column - Content */}
+      {/* Gradient Background */}
+      <div className="absolute inset-0 gradient-bg pointer-events-none" />
+
+      <div className="container relative mx-auto px-4 max-w-7xl">
+        <div className="flex flex-col items-center text-center space-y-8">
+          {/* Badge */}
           <motion.div
-            className="flex flex-col gap-6 md:gap-8 order-1 lg:order-1 items-center lg:items-start w-full"
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: 'easeOut' }}
+            transition={{ duration: 0.5 }}
           >
-            {/* Promotional Banner */}
-            <div className="flex justify-center lg:justify-start w-full">
-              <PromotionalBanner
-                label="Гайд"
-                title="Как вырасти до $100K | Скачать"
-                href="https://adapty.io/ru/ebooks/100k-app-playbook/"
+            <a
+              href="https://adapty.io/ru/ebooks/100k-app-playbook/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border bg-white hover:bg-secondary transition-all duration-200 group"
+            >
+              <span className="text-xs font-medium bg-black text-white px-2 py-0.5 rounded-full">
+                Гайд
+              </span>
+              <span className="text-sm text-foreground">
+                Как вырасти до $100K
+              </span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+            </a>
+          </motion.div>
+
+          {/* Main Heading */}
+          <motion.h1
+            className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight max-w-5xl"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            Платформа для{' '}
+            <span className="text-gradient">роста мобильных</span> приложений
+          </motion.h1>
+
+          {/* Subtitle */}
+          <motion.p
+            className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            Сэкономьте месяцы на внедрении подписок и удвойте доход от
+            приложения благодаря эффективному управлению пейволлами.
+          </motion.p>
+
+          {/* CTA Form */}
+          <motion.form
+            onSubmit={handleSubmit}
+            className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center w-full max-w-md"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
+            <Input
+              type="email"
+              placeholder="Email адрес"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="flex-1"
+              required
+            />
+            <Button type="submit" size="default" className="sm:w-auto">
+              Начать
+              <ArrowRight className="h-4 w-4" />
+            </Button>
+          </motion.form>
+
+          <motion.div
+            className="flex flex-col sm:flex-row gap-3 items-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
+            <Button
+              type="button"
+              variant="secondary"
+              size="default"
+              onClick={() =>
+                (window.location.href = 'https://adapty.io/ru/schedule-demo/')
+              }
+            >
+              Запись на демо
+            </Button>
+            <span className="text-sm text-muted-foreground">
+              Бесплатно до $10k MRR
+            </span>
+          </motion.div>
+
+          {/* Hero Image */}
+          <motion.div
+            className="relative w-full max-w-6xl mt-16"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.5 }}
+          >
+            <div className="relative rounded-2xl overflow-hidden border border-border shadow-vercel-lg bg-white">
+              <img
+                src="https://adapty.io/assets/uploads/2025/02/adapty-overview@2x.webp"
+                alt="Adapty Overview"
+                className="w-full h-auto"
+                loading="eager"
+                fetchPriority="high"
               />
             </div>
 
-            {/* Main Heading */}
-            <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight text-gradient-anim text-center lg:text-left w-full">
-              Платформа для роста мобильных приложений
-            </h1>
-
-            {/* Subtitle */}
-            <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-xl text-center lg:text-left w-full">
-              Сэкономьте месяцы на внедрении подписок и удвойте доход от
-              приложения благодаря эффективному управлению пейволлами.
-            </p>
-
-            {/* Action Buttons */}
-            <form
-              onSubmit={handleSubmit}
-              className="flex flex-col gap-3 items-stretch w-full md:w-auto"
-            >
-              <Input
-                type="email"
-                placeholder="Email адрес"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full md:w-auto md:min-w-[280px]"
-                required
-              />
-              <div className="flex flex-col md:flex-row gap-3 items-stretch md:items-start w-full md:w-auto">
-                <Button
-                  type="submit"
-                  size="default"
-                  className="w-full md:w-auto"
-                >
-                  Начать
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="default"
-                  className="w-full md:w-auto"
-                  onClick={() =>
-                    (window.location.href =
-                      'https://adapty.io/ru/schedule-demo/')
-                  }
-                >
-                  Запись на демо
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
-              </div>
-            </form>
-          </motion.div>
-
-          {/* Right Column - Images */}
-          <motion.div
-            className="relative flex items-center justify-center lg:justify-end order-2 lg:order-2 mt-8 lg:mt-0"
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
-          >
-            <div className="relative w-full max-w-[900px] h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px]">
-              {/* Overview Dashboard - Background */}
-              <div className="absolute top-0 right-0 w-[85%] md:w-[75%] h-full">
-                <div className="relative w-full h-full bg-white rounded-[2rem] shadow-[0_20px_60px_rgba(0,0,0,0.15)] overflow-hidden">
-                  <img
-                    src="https://adapty.io/assets/uploads/2025/02/adapty-overview@2x.webp"
-                    alt="Adapty Overview"
-                    className="w-full h-full object-cover object-left-top"
-                    loading="eager"
-                  />
-                </div>
-              </div>
-
-              {/* Phone Mockup - Foreground */}
-              <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[45%] md:w-[40%] z-10">
+            {/* Floating Phone Mockup */}
+            <div className="absolute -left-4 md:-left-8 bottom-8 md:bottom-16 w-32 md:w-48 lg:w-56 z-10">
+              <div className="relative rounded-2xl overflow-hidden shadow-vercel-lg">
                 <img
                   src="https://adapty.io/assets/uploads/2025/02/adapty-paywall-demo-preview@2x.webp"
-                  alt="Adapty Paywall Demo Preview"
-                  className="w-full h-auto filter drop-shadow-[0_20px_40px_rgba(0,0,0,0.2)]"
+                  alt="Adapty Paywall Demo"
+                  className="w-full h-auto"
                   loading="eager"
-                  fetchPriority="high"
                 />
               </div>
-
-              {/* Background Glow Effects */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-primary/5 rounded-full blur-3xl -z-10" />
-              <div className="absolute top-1/4 right-1/4 w-[40%] h-[40%] bg-accent/10 rounded-full blur-2xl -z-10" />
             </div>
           </motion.div>
         </div>
       </div>
-
-      {/* Decorative Elements */}
-      <div className="absolute top-10 right-4 md:top-20 md:right-20 w-24 h-24 md:w-32 md:h-32 bg-primary/5 rounded-full blur-2xl" />
-      <div className="absolute bottom-10 left-4 md:bottom-20 md:left-20 w-32 h-32 md:w-40 md:h-40 bg-accent/5 rounded-full blur-3xl" />
     </section>
-  )
-}
+  );
+};
